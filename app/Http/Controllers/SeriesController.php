@@ -28,12 +28,22 @@ class SeriesController extends Controller
     public function store(SeriesFormRequest $request)
     {
         $nome = $request->get('nome');
+        $qtdTemporadas = $request->get('qtd_temporadas');
+        $epPorTemporada = $request->get('ep_por_temporada');
+
         $serie = Serie::create(['nome' => $nome]);
+
+        for ($i = 1; $i <= $qtdTemporadas; $i++) {
+            $temporada = $serie->temporadas()->create(['numero' => $i]);
+            for ($j = 1; $j <= $epPorTemporada; $j++) {
+                $temporada->episodios()->create(['numero' => $j]);
+            }
+        }
 
         $request->session()
             ->flash(
                 'mensagem',
-                "Seria com id {$serie->id} criada: {$serie->nome}");
+                "Seria com id {$serie->id}, suas temporadas e episódios criados com sucesso: {$serie->nome}");
 
         return redirect()->route('listar_series');
     }
