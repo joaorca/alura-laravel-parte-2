@@ -21,7 +21,7 @@
                 <span id="nome-serie-{{$serie->id}}">{{$serie->nome}}</span>
 
                 <div class="input-group w-50" hidden id="input-nome-serie-{{$serie->id}}">
-                    <input type="text" class="form-control" value="{{$serie->nome}}">
+                    <input type="text" class="form-control" value="{{$serie->nome}}" name="nome" id="nome">
                     <div class="input-group-append">
                         <button class="btn btn-primary" onclick="editarSerie({{$serie->id}})">
                             <i class="fas fa-check"></i>
@@ -37,7 +37,7 @@
                     <a href="/series/{{$serie->id}}/temporadas" class="btn btn-info btn-sm mr-1"><i
                             class="fas fa-external-link-alt"></i></a>
                     <form method="post" action="/series/{{$serie->id}}"
-                          onsubmit="return confirm('Tem certeza que desea remover {{addslashes($serie->nome)}}?')">
+                          onsubmit="return confirm('Tem certeza que deseja remover {{addslashes($serie->nome)}}?')">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-danger btn-sm">
@@ -61,7 +61,29 @@
                 inputSerieEl.removeAttribute('hidden');
                 nomeSerieEl.hidden = true;
             }
+        }
 
+        function editarSerie(serieId) {
+            let formData = new FormData();
+
+            const nome = document
+                .querySelector(`#input-nome-serie-${serieId} > input`)
+                .value;
+
+            const token = document.querySelector(`input[name="_token"]`).value;
+
+            formData.append('nome', nome);
+            formData.append('_token', token);
+
+            const url = `/series/${serieId}/editaNome`;
+
+            fetch(url, {
+                body: formData,
+                method: 'POST'
+            }).then(() => {
+                toggleInput(serieId);
+                document.getElementById(`nome-serie-${serieId}`).textContent = nome;
+            });
         }
     </script>
 @endsection
