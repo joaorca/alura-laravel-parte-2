@@ -8,7 +8,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class TemporadaTest extends TestCase
+class BuscaPorEpisodiosTest extends TestCase
 {
     /** @var Temporada */
     public $temporada;
