@@ -11,6 +11,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CriadorDeSerieTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testCriarSerie()
     {
         $criadorDeSerie = new CriadorDeSerie();
